@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VelvetGlow Admin | Salon Management Portal</title>
+  <meta name="description" content="Front-end Salon Management & Admin Dashboard for VelvetGlow Hair Salon & Spa.">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* Admin specific enhancements */
+    .admin-nav-item.active {
+      background-color: var(--color-rose);
+      color: #FFF !important;
+    }
+    .action-btn-sm {
+      padding: 0.35rem 0.65rem;
+      font-size: 0.75rem;
+      border-radius: var(--radius-xs);
+      border: 1px solid var(--color-border);
+      background: var(--color-bg);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .action-btn-sm:hover {
+      background: var(--color-charcoal);
+      color: #FFF;
+    }
+    .action-btn-danger {
+      color: var(--color-error);
+      border-color: rgba(184, 74, 57, 0.3);
+    }
+    .action-btn-danger:hover {
+      background: var(--color-error);
+      color: #FFF;
+    }
+    .admin-section-pane {
+      display: none;
+    }
+    .admin-section-pane.active {
+      display: block;
+    }
+    .admin-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 900px) {
+      .admin-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div>
+        <a href="index.html" class="site-logo">
+          <div class="logo-symbol" style="width: 34px; height: 34px; font-size: 1rem;">VG</div>
+          <div class="logo-text">
+            <span class="logo-title" style="color: #FFF; font-size: 1.15rem;">VelvetGlow</span>
+            <span class="logo-tagline" style="font-size: 0.6rem;">Admin Console</span>
+          </div>
+        </a>
+
+        <nav class="admin-sidebar-nav">
+          <a href="#overview" class="admin-nav-item active" data-tab="overview">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Overview &amp; Stats</span>
+          </a>
+          <a href="#appointments" class="admin-nav-item" data-tab="appointments">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span>Appointments</span>
+          </a>
+          <a href="#services" class="admin-nav-item" data-tab="services">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            <span>Services &amp; Pricing</span>
+          </a>
+          <a href="#subscribers" class="admin-nav-item" data-tab="subscribers">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <span>Subscribers</span>
+          </a>
+          <a href="#settings" class="admin-nav-item" data-tab="settings">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Salon Settings</span>
+          </a>
+        </nav>
+      </div>
+
+      <div>
+        <div style="padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: var(--radius-sm); margin-bottom: 1rem;">
+          <p style="font-size: 0.75rem; color: #A8A29A; margin-bottom: 0.25rem;">Logged in as Owner:</p>
+          <p style="font-size: 0.85rem; color: #FFF; font-weight: 600;">Wajid Wazir</p>
+          <p style="font-size: 0.72rem; color: var(--color-gold);">wajidwazir62@gmail.com</p>
+        </div>
+        <a href="index.html" class="btn btn-outline-white btn-sm" style="width: 100%;">
+          <span>&larr; View Live Website</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main-content">
+      <!-- Header Bar -->
+      <div class="admin-header-bar">
+        <div>
+          <h2 style="font-size: 1.75rem; margin-bottom: 0.25rem;" id="admin-page-title">Sanctuary Overview</h2>
+          <p style="font-size: 0.88rem; color: var(--color-text-muted);">Real-time booking data, treatment pricing, and guest records stored in browser LocalStorage.</p>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+          <a href="https://wa.me/923354923228" target="_blank" rel="noopener" class="btn btn-sm" style="background: #25D366; color: #FFF;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.699c.971.54 1.761.821 2.796.821 3.181 0 5.767-2.586 5.767-5.766.001-3.181-2.584-5.767-5.767-5.767zm2.502 6.471c-.137-.069-.811-.401-.937-.447-.126-.046-.217-.069-.308.069-.091.137-.354.447-.434.538-.08.092-.16.103-.297.034-.137-.069-.579-.213-1.103-.68-.408-.364-.683-.814-.763-.951-.08-.137-.009-.211.06-.279.062-.062.137-.16.206-.24.069-.08.091-.137.137-.229.046-.091.023-.171-.011-.24-.034-.069-.308-.743-.423-1.017-.111-.268-.225-.232-.308-.236-.08-.004-.171-.005-.263-.005-.091 0-.24.034-.365.171-.126.137-.48.469-.48 1.143s.492 1.326.56 1.417c.069.092.969 1.48 2.348 2.076.328.142.584.227.784.29.33.105.63.09.868.055.265-.04.811-.332.926-.652.114-.32.114-.595.08-.652-.034-.057-.125-.091-.262-.16z"/></svg>
+            <span>WhatsApp (03354923228)</span>
+          </a>
+          <button class="btn btn-outline btn-sm" id="admin-reset-demo-btn" title="Reload sample appointments">Reset Demo Data</button>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TAB 1: OVERVIEW & STATS
+           ==================================================================== -->
+      <section class="admin-section-pane active" id="pane-overview">
+        <!-- Stats Cards -->
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card">
+            <h6>Total Appointments</h6>
+            <div class="stat-val" id="stat-total-bookings">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <h6>Estimated Revenue</h6>
+            <div class="stat-val" id="stat-total-revenue" style="color: var(--color-rose);">$0</div>
+          </div>
+          <div class="admin-stat-card">
+            <h6>Active Treatments</h6>
+            <div class="stat-val" id="stat-total-services">10</div>
+          </div>
+          <div class="admin-stat-card">
+            <h6>Newsletter Subscribers</h6>
+            <div class="stat-val" id="stat-total-subs" style="color: var(--color-gold);">0</div>
+          </div>
+        </div>
+
+        <!-- Recent Appointments Quick Table -->
+        <div class="admin-table-card">
+          <div class="admin-table-header">
+            <h4>Recent Client Reservations</h4>
+            <button class="btn btn-primary btn-sm" onclick="switchAdminTab('appointments')">View All Bookings &rarr;</button>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Guest</th>
+                <th>Ritual</th>
+                <th>Artisan</th>
+                <th>Date &amp; Time</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="overview-recent-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TAB 2: APPOINTMENTS MANAGEMENT
+           ==================================================================== -->
+      <section class="admin-section-pane" id="pane-appointments">
+        <div class="admin-table-card">
+          <div class="admin-table-header" style="flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <select id="appointment-filter-status" class="form-control" style="padding: 0.45rem 0.85rem; font-size: 0.85rem; width: auto;">
+                <option value="all">All Statuses</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Pending">Pending</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <input type="text" id="appointment-search-input" placeholder="Search by name, phone, or ID..." class="form-control" style="padding: 0.45rem 0.85rem; font-size: 0.85rem; width: 240px;">
+            </div>
+
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-outline btn-sm" id="export-csv-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Export CSV</span>
+              </button>
+              <button class="btn btn-rose btn-sm" id="open-manual-booking-btn">+ New Walk-in Booking</button>
+            </div>
+          </div>
+
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Guest Details</th>
+                <th>Treatment</th>
+                <th>Artisan</th>
+                <th>Date &amp; Time</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="appointments-full-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TAB 3: SERVICES & PRICING
+           ==================================================================== -->
+      <section class="admin-section-pane" id="pane-services">
+        <div class="admin-table-card">
+          <div class="admin-table-header">
+            <h4>Sanctuary Treatment Catalog &amp; Pricing</h4>
+            <button class="btn btn-rose btn-sm" id="open-add-service-btn">+ Add New Treatment</button>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Treatment Name</th>
+                <th>Category</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="services-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TAB 4: NEWSLETTER SUBSCRIBERS
+           ==================================================================== -->
+      <section class="admin-section-pane" id="pane-subscribers">
+        <div class="admin-table-card">
+          <div class="admin-table-header">
+            <h4>Velvet Chronicle Subscribers</h4>
+            <button class="btn btn-outline btn-sm" id="export-subs-btn">Export Email List</button>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Subscriber Email Address</th>
+                <th>Subscription Status</th>
+                <th>Date Joined</th>
+              </tr>
+            </thead>
+            <tbody id="subscribers-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           TAB 5: SALON SETTINGS & CONTACT INFO
+           ==================================================================== -->
+      <section class="admin-section-pane" id="pane-settings">
+        <div class="admin-grid-2">
+          <!-- General Salon Info -->
+          <div class="admin-table-card" style="padding: 2rem;">
+            <h4 style="margin-bottom: 1.5rem;">Sanctuary Business Details</h4>
+            <form id="settings-form">
+              <div class="form-group">
+                <label>Salon Email Address</label>
+                <input type="email" id="set-email" class="form-control" value="wajidwazir62@gmail.com" required>
+              </div>
+              <div class="form-group">
+                <label>Phone / WhatsApp Number</label>
+                <input type="text" id="set-phone" class="form-control" value="03354923228" required>
+              </div>
+              <div class="form-group">
+                <label>Physical Address</label>
+                <input type="text" id="set-address" class="form-control" value="42 Rue de l'Élégance, Suite 100, Downtown Luxe District" required>
+              </div>
+              <div class="form-group">
+                <label>Operating Hours</label>
+                <input type="text" id="set-hours" class="form-control" value="Tuesday – Sunday: 9:00 AM – 8:00 PM" required>
+              </div>
+              <button type="submit" class="btn btn-rose btn-md">Save Settings</button>
+            </form>
+          </div>
+
+          <!-- Quick Owner Actions -->
+          <div class="admin-table-card" style="padding: 2rem;">
+            <h4 style="margin-bottom: 1rem;">Developer &amp; Owner Profile</h4>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 1.5rem;">
+              Direct integration configured for <strong>Wajid Wazir</strong> with email <code>wajidwazir62@gmail.com</code> and WhatsApp <code>03354923228</code>.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <a href="https://wa.me/923354923228" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="justify-content: flex-start;">
+                <span>💬 Test WhatsApp Connect (03354923228)</span>
+              </a>
+              <a href="mailto:wajidwazir62@gmail.com" class="btn btn-outline btn-sm" style="justify-content: flex-start;">
+                <span>✉️ Test Email Connect (wajidwazir62@gmail.com)</span>
+              </a>
+              <a href="index.html#booking" class="btn btn-outline btn-sm" style="justify-content: flex-start;">
+                <span>📅 Test Client Booking Flow</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal: Manual Walk-in Booking Form -->
+  <div class="modal-backdrop" id="manual-booking-modal" aria-hidden="true">
+    <div class="modal-dialog" style="padding: 2.5rem;">
+      <button class="modal-close-btn" data-close-modal>&times;</button>
+      <h3 style="margin-bottom: 1rem;">Add Walk-In / Manual Appointment</h3>
+      <form id="manual-booking-form">
+        <div class="form-group">
+          <label>Guest Full Name</label>
+          <input type="text" id="m-name" class="form-control" required placeholder="e.g. Lauren Bailey">
+        </div>
+        <div class="form-group">
+          <label>Phone / WhatsApp</label>
+          <input type="text" id="m-phone" class="form-control" required placeholder="e.g. 03354923228">
+        </div>
+        <div class="form-group">
+          <label>Treatment Ritual</label>
+          <input type="text" id="m-service" class="form-control" required placeholder="e.g. Signature Sunlit Balayage & Glaze">
+        </div>
+        <div class="form-group">
+          <label>Master Artisan</label>
+          <select id="m-stylist" class="form-control">
+            <option value="Elena Vance">Elena Vance</option>
+            <option value="Marcus Thorne">Marcus Thorne</option>
+            <option value="Sophia Laurent">Sophia Laurent</option>
+          </select>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="m-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <input type="text" id="m-time" class="form-control" value="02:00 PM" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Total Price ($)</label>
+          <input type="text" id="m-total" class="form-control" value="$245" required>
+        </div>
+        <button type="submit" class="btn btn-rose btn-lg" style="width: 100%;">Add to Diary</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add New Service -->
+  <div class="modal-backdrop" id="add-service-modal" aria-hidden="true">
+    <div class="modal-dialog" style="padding: 2.5rem;">
+      <button class="modal-close-btn" data-close-modal>&times;</button>
+      <h3 style="margin-bottom: 1rem;">Add New Sanctuary Treatment</h3>
+      <form id="add-service-form">
+        <div class="form-group">
+          <label>Treatment Name</label>
+          <input type="text" id="srv-name" class="form-control" required placeholder="e.g. Diamond Collagen Facial">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="srv-category" class="form-control">
+            <option value="hair">Hair &amp; Styling</option>
+            <option value="colour">Colour &amp; Balayage</option>
+            <option value="skin">Skin &amp; Facials</option>
+            <option value="spa">Body &amp; Spa</option>
+            <option value="bridal">Bridal &amp; Gala</option>
+          </select>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Duration</label>
+            <input type="text" id="srv-duration" class="form-control" required placeholder="e.g. 75 mins">
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="text" id="srv-price" class="form-control" required placeholder="e.g. $210">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description / Notes</label>
+          <textarea id="srv-desc" class="form-control" rows="2" placeholder="Description of the ritual, botanical ingredients..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-rose btn-lg" style="width: 100%;">Add Service to Menu</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Edit Existing Service -->
+  <div class="modal-backdrop" id="edit-service-modal" aria-hidden="true">
+    <div class="modal-dialog" style="padding: 2.5rem;">
+      <button class="modal-close-btn" data-close-modal>&times;</button>
+      <h3 style="margin-bottom: 1rem;">✏️ Edit Sanctuary Treatment</h3>
+      <form id="edit-service-form">
+        <input type="hidden" id="edit-srv-index">
+        <div class="form-group">
+          <label>Treatment Name</label>
+          <input type="text" id="edit-srv-name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="edit-srv-category" class="form-control">
+            <option value="Hair & Styling">Hair &amp; Styling</option>
+            <option value="Colour & Balayage">Colour &amp; Balayage</option>
+            <option value="Skin & Facials">Skin &amp; Facials</option>
+            <option value="Body & Spa">Body &amp; Spa</option>
+            <option value="Bridal & Gala">Bridal &amp; Gala</option>
+          </select>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label>Duration</label>
+            <input type="text" id="edit-srv-duration" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="text" id="edit-srv-price" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description / Details</label>
+          <textarea id="edit-srv-desc" class="form-control" rows="2"></textarea>
+        </div>
+        <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+          <button type="button" class="btn btn-outline btn-md" data-close-modal style="flex: 1;">Cancel</button>
+          <button type="submit" class="btn btn-rose btn-md" style="flex: 2;">Save Treatment Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Admin JavaScript Engine -->
+  <script>
+    'use strict';
+
+    // Default Services Data
+    const DEFAULT_SERVICES = [
+      { name: "Artisan Haircut & Velvet Blowdry", category: "Hair & Styling", duration: "60 mins", price: "$95" },
+      { name: "Signature Sunlit Balayage & Glaze", category: "Colour & Balayage", duration: "150 mins", price: "$245" },
+      { name: "Full Single Process & Gloss", category: "Colour & Balayage", duration: "90 mins", price: "$155" },
+      { name: "Silk Keratin Smoothing Therapy", category: "Hair & Styling", duration: "120 mins", price: "$280" },
+      { name: "HydraGlow Oxygenating Facial", category: "Skin & Facials", duration: "75 mins", price: "$175" },
+      { name: "Botanical Micro-Peel & Sculpt", category: "Skin & Facials", duration: "60 mins", price: "$195" },
+      { name: "Warm Herbal Botanical Body Wrap", category: "Body & Spa", duration: "90 mins", price: "$185" },
+      { name: "Aromatherapy Hot Stone Massage", category: "Body & Spa", duration: "75 mins", price: "$165" },
+      { name: "Bridal & Gala Couture Package", category: "Bridal & Gala", duration: "180 mins", price: "$290" }
+    ];
+
+    function getStoredBookings() {
+      try {
+        const raw = localStorage.getItem('vg_bookings');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      
+      const demo = [
+        {
+          id: 'VG-94821',
+          name: 'Victoria Stirling',
+          email: 'victoria@example.com',
+          phone: '03354923228',
+          service: 'Bridal & Gala Couture Package',
+          stylist: 'Sophia Laurent',
+          date: '2026-08-25',
+          time: '11:00 AM',
+          total: '$315',
+          status: 'Confirmed'
+        },
+        {
+          id: 'VG-83910',
+          name: 'Amara Chen',
+          email: 'amara.chen@example.com',
+          phone: '03354923228',
+          service: 'Signature Sunlit Balayage & Glaze',
+          stylist: 'Elena Vance',
+          date: '2026-08-26',
+          time: '01:30 PM',
+          total: '$280',
+          status: 'Confirmed'
+        },
+        {
+          id: 'VG-71249',
+          name: 'Claire Kensington',
+          email: 'claire@example.com',
+          phone: '03354923228',
+          service: 'HydraGlow Oxygenating Facial',
+          stylist: 'Sophia Laurent',
+          date: '2026-08-27',
+          time: '03:00 PM',
+          total: '$175',
+          status: 'Pending'
+        }
+      ];
+      localStorage.setItem('vg_bookings', JSON.stringify(demo));
+      return demo;
+    }
+
+    function getStoredServices() {
+      try {
+        const raw = localStorage.getItem('vg_admin_services');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return DEFAULT_SERVICES;
+    }
+
+    function getStoredSubscribers() {
+      try {
+        const raw = localStorage.getItem('vg_subscribers');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      const demo = ['claire.kensington@gmail.com', 'victoria.stirling@vogue.com', 'elena.guest@luxury.com'];
+      localStorage.setItem('vg_subscribers', JSON.stringify(demo));
+      return demo;
+    }
+
+    // Render Overview & Tables
+    function renderAdminPortal() {
+      const bookings = getStoredBookings();
+      const services = getStoredServices();
+      const subs = getStoredSubscribers();
+
+      // Stats Calculations
+      let totalRevenue = 0;
+      bookings.forEach(b => {
+        const amt = parseInt((b.total || '$0').replace(/[^0-9]/g, ''), 10) || 0;
+        if (b.status !== 'Cancelled') totalRevenue += amt;
+      });
+
+      document.getElementById('stat-total-bookings').textContent = bookings.length;
+      document.getElementById('stat-total-revenue').textContent = `$${totalRevenue.toLocaleString()}`;
+      document.getElementById('stat-total-services').textContent = services.length;
+      document.getElementById('stat-total-subs').textContent = subs.length;
+
+      // Render Recent Overview Table
+      const recentTbody = document.getElementById('overview-recent-tbody');
+      if (recentTbody) {
+        recentTbody.innerHTML = bookings.slice(0, 5).map(b => `
+          <tr>
+            <td><strong>${b.id}</strong></td>
+            <td>${b.name}</td>
+            <td>${b.service}</td>
+            <td>${b.stylist}</td>
+            <td>${b.date} @ ${b.time}</td>
+            <td><strong>${b.total}</strong></td>
+            <td><span class="status-badge ${b.status.toLowerCase()}">${b.status}</span></td>
+          </tr>
+        `).join('');
+      }
+
+      // Render Full Appointments Table
+      renderAppointmentsTable(bookings);
+
+      // Render Services Table
+      const srvTbody = document.getElementById('services-tbody');
+      if (srvTbody) {
+        srvTbody.innerHTML = services.map((s, idx) => `
+          <tr>
+            <td><strong>${s.name}</strong></td>
+            <td><span class="specialty-tag">${s.category}</span></td>
+            <td>${s.duration}</td>
+            <td><strong style="color: var(--color-rose);">${s.price}</strong></td>
+            <td>
+              <div style="display: flex; gap: 0.4rem;">
+                <button class="action-btn-sm" onclick="editService(${idx})" title="Edit Treatment">✏️ Edit</button>
+                <button class="action-btn-sm action-btn-danger" onclick="deleteService(${idx})" title="Remove Treatment">🗑 Remove</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // Render Subscribers Table
+      const subsTbody = document.getElementById('subscribers-tbody');
+      if (subsTbody) {
+        subsTbody.innerHTML = subs.map((email, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td><strong>${email}</strong></td>
+            <td><span class="status-badge confirmed">Active VIP</span></td>
+            <td>Aug 2026</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function renderAppointmentsTable(bookings) {
+      const fullTbody = document.getElementById('appointments-full-tbody');
+      const statusFilter = document.getElementById('appointment-filter-status')?.value || 'all';
+      const searchVal = document.getElementById('appointment-search-input')?.value.toLowerCase().trim() || '';
+
+      if (!fullTbody) return;
+
+      const filtered = bookings.filter(b => {
+        const matchesStatus = statusFilter === 'all' || b.status.toLowerCase() === statusFilter.toLowerCase();
+        const matchesSearch = searchVal === '' || 
+          b.name.toLowerCase().includes(searchVal) || 
+          b.id.toLowerCase().includes(searchVal) || 
+          (b.phone && b.phone.includes(searchVal)) ||
+          b.service.toLowerCase().includes(searchVal);
+        return matchesStatus && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        fullTbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--color-text-muted); padding: 2rem;">No matching bookings found.</td></tr>`;
+        return;
+      }
+
+      fullTbody.innerHTML = filtered.map((b, idx) => `
+        <tr>
+          <td><strong style="color: var(--color-rose);">${b.id}</strong></td>
+          <td>
+            <strong>${b.name}</strong><br>
+            <small style="color: var(--color-text-muted);">${b.phone || '03354923228'}</small>
+          </td>
+          <td>${b.service}</td>
+          <td>${b.stylist}</td>
+          <td>${b.date}<br><small>${b.time}</small></td>
+          <td><strong>${b.total}</strong></td>
+          <td>
+            <span class="status-badge ${b.status.toLowerCase()}">${b.status}</span>
+          </td>
+          <td>
+            <div style="display: flex; gap: 0.35rem;">
+              <button class="action-btn-sm" title="Mark Confirmed" onclick="updateBookingStatus('${b.id}', 'Confirmed')">✓</button>
+              <button class="action-btn-sm" title="Mark Cancelled" onclick="updateBookingStatus('${b.id}', 'Cancelled')">✕</button>
+              <button class="action-btn-sm action-btn-danger" title="Delete" onclick="deleteBooking('${b.id}')">🗑</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Tab Navigation
+    function switchAdminTab(tabName) {
+      document.querySelectorAll('.admin-nav-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+      });
+      document.querySelectorAll('.admin-section-pane').forEach(pane => {
+        pane.classList.toggle('active', pane.id === `pane-${tabName}`);
+      });
+
+      const titleMap = {
+        overview: 'Sanctuary Overview',
+        appointments: 'Appointment Reservations',
+        services: 'Services & Pricing Menu',
+        subscribers: 'Newsletter Subscribers',
+        settings: 'Sanctuary Settings'
+      };
+      const titleEl = document.getElementById('admin-page-title');
+      if (titleEl) titleEl.textContent = titleMap[tabName] || 'Admin Console';
+    }
+
+    // Booking Status Update
+    window.updateBookingStatus = function(id, newStatus) {
+      const bookings = getStoredBookings();
+      const item = bookings.find(b => b.id === id);
+      if (item) {
+        item.status = newStatus;
+        localStorage.setItem('vg_bookings', JSON.stringify(bookings));
+        renderAdminPortal();
+        showToast(`Booking ${id} marked as ${newStatus}`);
+      }
+    };
+
+    // Booking Delete
+    window.deleteBooking = function(id) {
+      if (confirm(`Are you sure you want to remove booking ${id}?`)) {
+        let bookings = getStoredBookings();
+        bookings = bookings.filter(b => b.id !== id);
+        localStorage.setItem('vg_bookings', JSON.stringify(bookings));
+        renderAdminPortal();
+        showToast(`Booking ${id} deleted`);
+      }
+    };
+
+    // Edit Service Handler
+    window.editService = function(idx) {
+      const services = getStoredServices();
+      const srv = services[idx];
+      if (!srv) return;
+
+      document.getElementById('edit-srv-index').value = idx;
+      document.getElementById('edit-srv-name').value = srv.name;
+      document.getElementById('edit-srv-category').value = srv.category;
+      document.getElementById('edit-srv-duration').value = srv.duration;
+      document.getElementById('edit-srv-price').value = srv.price;
+      document.getElementById('edit-srv-desc').value = srv.desc || '';
+
+      const editModal = document.getElementById('edit-service-modal');
+      openModal(editModal);
+    };
+
+    // Delete Service
+    window.deleteService = function(idx) {
+      if (confirm('Are you sure you want to remove this treatment from the menu?')) {
+        const services = getStoredServices();
+        services.splice(idx, 1);
+        localStorage.setItem('vg_admin_services', JSON.stringify(services));
+        renderAdminPortal();
+        showToast('Treatment removed from catalog');
+      }
+    };
+
+    // Export CSV
+    function exportToCSV() {
+      const bookings = getStoredBookings();
+      let csv = 'Booking ID,Guest Name,Email,Phone,Service,Artisan,Date,Time,Total,Status\n';
+      bookings.forEach(b => {
+        csv += `"${b.id}","${b.name}","${b.email || ''}","${b.phone || ''}","${b.service}","${b.stylist}","${b.date}","${b.time}","${b.total}","${b.status}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `velvetglow-appointments-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      showToast('CSV export downloaded successfully!', 'success');
+    }
+
+    // Modal Helpers
+    function openModal(el) { el.classList.add('open'); }
+    function closeModal(el) { el.classList.remove('open'); }
+
+    // Init Event Listeners
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAdminPortal();
+
+      // Navigation clicks
+      document.querySelectorAll('.admin-nav-item').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const tab = link.getAttribute('data-tab');
+          switchAdminTab(tab);
+        });
+      });
+
+      // Filter & Search
+      document.getElementById('appointment-filter-status')?.addEventListener('change', () => {
+        renderAppointmentsTable(getStoredBookings());
+      });
+      document.getElementById('appointment-search-input')?.addEventListener('input', () => {
+        renderAppointmentsTable(getStoredBookings());
+      });
+
+      // Export Buttons
+      document.getElementById('export-csv-btn')?.addEventListener('click', exportToCSV);
+      document.getElementById('export-subs-btn')?.addEventListener('click', () => {
+        const subs = getStoredSubscribers().join('\n');
+        const blob = new Blob([subs], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'velvetglow-subscribers.txt';
+        a.click();
+      });
+
+      // Reset Demo Data
+      document.getElementById('admin-reset-demo-btn')?.addEventListener('click', () => {
+        localStorage.removeItem('vg_bookings');
+        localStorage.removeItem('vg_admin_services');
+        localStorage.removeItem('vg_subscribers');
+        renderAdminPortal();
+        showToast('Demo data successfully reloaded!', 'success');
+      });
+
+      // Manual Booking Modal
+      const manualModal = document.getElementById('manual-booking-modal');
+      const addServiceModal = document.getElementById('add-service-modal');
+      const editServiceModal = document.getElementById('edit-service-modal');
+
+      document.getElementById('open-manual-booking-btn')?.addEventListener('click', () => {
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('m-date');
+        if (dateInput) { dateInput.value = today; dateInput.min = today; }
+        openModal(manualModal);
+      });
+
+      document.getElementById('open-add-service-btn')?.addEventListener('click', () => {
+        openModal(addServiceModal);
+      });
+
+      // Modal Closers
+      document.querySelectorAll('[data-close-modal]').forEach(b => {
+        b.addEventListener('click', () => {
+          closeModal(manualModal);
+          closeModal(addServiceModal);
+          closeModal(editServiceModal);
+        });
+      });
+
+      // Manual Booking Form Submit
+      document.getElementById('manual-booking-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const record = {
+          id: 'VG-' + Math.floor(10000 + Math.random() * 90000),
+          name: document.getElementById('m-name').value.trim(),
+          phone: document.getElementById('m-phone').value.trim(),
+          service: document.getElementById('m-service').value.trim(),
+          stylist: document.getElementById('m-stylist').value,
+          date: document.getElementById('m-date').value,
+          time: document.getElementById('m-time').value,
+          total: document.getElementById('m-total').value,
+          status: 'Confirmed',
+          timestamp: new Date().toISOString()
+        };
+        const bookings = getStoredBookings();
+        bookings.unshift(record);
+        localStorage.setItem('vg_bookings', JSON.stringify(bookings));
+        closeModal(manualModal);
+        document.getElementById('manual-booking-form').reset();
+        renderAdminPortal();
+        showToast('Walk-in appointment added to diary!', 'success');
+      });
+
+      // Add Service Form Submit
+      document.getElementById('add-service-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newSrv = {
+          name: document.getElementById('srv-name').value.trim(),
+          category: document.getElementById('srv-category').options[document.getElementById('srv-category').selectedIndex].text,
+          duration: document.getElementById('srv-duration').value.trim(),
+          price: document.getElementById('srv-price').value.trim(),
+          desc: document.getElementById('srv-desc')?.value.trim() || ''
+        };
+        const services = getStoredServices();
+        services.push(newSrv);
+        localStorage.setItem('vg_admin_services', JSON.stringify(services));
+        closeModal(addServiceModal);
+        document.getElementById('add-service-form').reset();
+        renderAdminPortal();
+        showToast('New service added to price menu!', 'success');
+      });
+
+      // Edit Service Form Submit
+      document.getElementById('edit-service-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const idx = parseInt(document.getElementById('edit-srv-index').value, 10);
+        const services = getStoredServices();
+        if (services[idx] !== undefined) {
+          services[idx] = {
+            name: document.getElementById('edit-srv-name').value.trim(),
+            category: document.getElementById('edit-srv-category').value,
+            duration: document.getElementById('edit-srv-duration').value.trim(),
+            price: document.getElementById('edit-srv-price').value.trim(),
+            desc: document.getElementById('edit-srv-desc')?.value.trim() || ''
+          };
+          localStorage.setItem('vg_admin_services', JSON.stringify(services));
+          closeModal(editServiceModal);
+          renderAdminPortal();
+          showToast(`Treatment "${services[idx].name}" updated successfully!`, 'success');
+        }
+      });
+
+      // Settings Form Submit
+      document.getElementById('settings-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        showToast('Sanctuary settings updated successfully!', 'success');
+      });
+    });
+
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 350);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
