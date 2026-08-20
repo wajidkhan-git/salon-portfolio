@@ -68,6 +68,47 @@
     .admin-mobile-nav {
       display: none;
     }
+    .admin-quick-action-card {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.85rem 1.1rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background-color: var(--color-bg);
+      color: var(--color-charcoal);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .admin-quick-action-card:hover {
+      border-color: var(--color-rose);
+      background-color: var(--color-bg-alt);
+      transform: translateY(-2px);
+    }
+    .admin-quick-action-card .action-icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    .admin-quick-action-card .action-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      min-width: 0;
+      flex-grow: 1;
+    }
+    .admin-quick-action-card .action-details strong {
+      font-size: 0.88rem;
+      color: var(--color-charcoal);
+      white-space: normal;
+    }
+    .admin-quick-action-card .action-details span {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      word-break: break-all;
+      white-space: normal;
+    }
     @media (max-width: 900px) {
       .admin-grid-2 {
         grid-template-columns: 1fr;
@@ -451,15 +492,27 @@
             <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 1.5rem;">
               Direct integration configured for <strong>Wajid Wazir</strong> with email <code>wajidwazir62@gmail.com</code> and WhatsApp <code>03354923228</code>.
             </p>
-            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-              <a href="https://wa.me/923354923228" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="justify-content: flex-start;">
-                <span>💬 Test WhatsApp Connect (03354923228)</span>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%;">
+              <a href="https://wa.me/923354923228" target="_blank" rel="noopener" class="admin-quick-action-card">
+                <span class="action-icon">💬</span>
+                <div class="action-details">
+                  <strong>Test WhatsApp Connect</strong>
+                  <span>03354923228</span>
+                </div>
               </a>
-              <a href="mailto:wajidwazir62@gmail.com" class="btn btn-outline btn-sm" style="justify-content: flex-start;">
-                <span>✉️ Test Email Connect (wajidwazir62@gmail.com)</span>
+              <a href="mailto:wajidwazir62@gmail.com" class="admin-quick-action-card">
+                <span class="action-icon">✉️</span>
+                <div class="action-details">
+                  <strong>Test Email Connect</strong>
+                  <span style="word-break: break-all;">wajidwazir62@gmail.com</span>
+                </div>
               </a>
-              <a href="index.html#booking" class="btn btn-outline btn-sm" style="justify-content: flex-start;">
-                <span>📅 Test Client Booking Flow</span>
+              <a href="index.html#booking" class="admin-quick-action-card">
+                <span class="action-icon">📅</span>
+                <div class="action-details">
+                  <strong>Test Client Booking Flow</strong>
+                  <span>Open Sanctuary Booking Engine</span>
+                </div>
               </a>
             </div>
           </div>
